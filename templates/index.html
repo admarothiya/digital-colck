@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Digital Clock </title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;              /* full viewport height */
+      display: flex;
+      align-items: center;        /* vertical center */
+      justify-content: center;    /* horizontal center */
+      background: #000;
+      color: #0ff;
+      font-family: 'bikon', sans-serif;
+    }
+
+    .clock {
+      font-size: clamp(28px, 8vw, 96px);
+      text-align: center;
+      padding: 40px 60px;         /* extra padding */
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05); /* optional backdrop */
+      box-shadow: 0 8px 20px rgba(0, 255, 255, 0.2);
+    }
+
+    .date {
+      font-size: 0.45em;
+      margin-top: 15px;
+      opacity: 0.9;
+      letter-spacing: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock">
+    <div id="time">--:--:--</div>
+    <div id="date" class="date">--</div>
+  </div>
+
+  <script>
+    async function fetchTime(){
+      try{
+        const res = await fetch('/time');
+        if(!res.ok) throw new Error('Network error');
+        const data = await res.json();
+        document.getElementById('time').textContent = data.time;
+        document.getElementById('date').textContent = data.date;
+      }catch(e){
+        console.error(e);
+      }
+    }
+    fetchTime();
+    setInterval(fetchTime, 1000);
+  </script>
+</body>
+</html>
